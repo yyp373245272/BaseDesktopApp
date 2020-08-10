@@ -4,6 +4,7 @@ import "element-ui/lib/theme-chalk/index.css"
 import App from "./App.vue"
 import router from "./router"
 const { exec } = require("child_process")
+const iconv = require('iconv-lite')
 
 Vue.use(ElementUI)
 
@@ -37,7 +38,7 @@ Vue.prototype.$execCmd = function(cmdStr, loadingStr, resultName) {
     }
 
     // no error
-    console.log(stdout)
+    console.log(iconv.decode(stdout,'unicode'))
     console.log(stderr)
     result = stdout + "\n" + stderr
     // stop loading animation

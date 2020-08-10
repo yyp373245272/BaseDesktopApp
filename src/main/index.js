@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain } from "electron"
+import { app, BrowserWindow, ipcMain, dialog } from "electron"
 
 /**
  * Set `__static` path to static files in production
@@ -65,6 +65,32 @@ app.on("activate", () => {
     createWindow()
   }
 })
+let childDownModal;
+  ipcMain.on('child-down-modal', () => {
+    childDownModal = new BrowserWindow({
+      parent: mainWindow,
+      modal: true,
+      show: false,
+      width: 300,
+      height: 300,
+      resizable: false,
+      backgroundColor: "#fff",
+      frame: false,
+      hasShadow: true,
+      closable: true,
+      webPreferences: {
+        devTools: false
+      }
+    })
+    childDownModal.once('ready-to-show', () => {
+      childDownModal.show();
+    })
+    childDownModal.loadURL(winURL + '#/downloadModal')
+  })
+  //关闭模态窗口
+  ipcMain.on('close-down-modal', () => {
+    childDownModal.hide();
+  })
 
 /**
  * Auto Updater
